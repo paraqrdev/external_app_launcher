@@ -1,4 +1,4 @@
-package com.example.launchexter nalapp;
+package com.example.launchexternalapp;
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -21,7 +21,7 @@ public class LaunchexternalappPlugin implements MethodCallHandler, FlutterPlugin
   private Context context;
 
   public LaunchexternalappPlugin() {
-    
+
   }
   private LaunchexternalappPlugin(Context context) {
     this.context = context;
@@ -34,7 +34,7 @@ public class LaunchexternalappPlugin implements MethodCallHandler, FlutterPlugin
   }
 
   @Override
-  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {  
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "launch_vpn");
     channel.setMethodCallHandler(new LaunchexternalappPlugin(flutterPluginBinding.getApplicationContext()));
   }
