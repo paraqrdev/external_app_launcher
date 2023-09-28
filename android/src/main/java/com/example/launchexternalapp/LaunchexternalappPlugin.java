@@ -1,4 +1,4 @@
-package com.example.launchexternalapp;
+package com.example.launchexter nalapp;
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 
 /** LaunchExternalAppPlugin */
 public class LaunchexternalappPlugin implements MethodCallHandler, FlutterPlugin {
@@ -58,7 +59,7 @@ public class LaunchexternalappPlugin implements MethodCallHandler, FlutterPlugin
 
       String packageName = call.argument("package_name");
 
-      result.success(openApp(packageName, call.argument("open_store").toString()));
+      result.success(openApp(packageName, call.argument("url").toString()));
 
     } else {
       result.notImplemented();
@@ -74,24 +75,21 @@ public class LaunchexternalappPlugin implements MethodCallHandler, FlutterPlugin
     }
   }
 
-  private String openApp(String packageName, String openStore) {
-    if (isAppInstalled(packageName)) {
-      Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-      if (launchIntent != null) {
-        // null pointer check in case package name was not found
-        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(launchIntent);
-        return "app_opened";
-      }
-    } else {
-      if (openStore != "false") {
-        Intent intent1 = new Intent(Intent.ACTION_VIEW);
-        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent1.setData(android.net.Uri.parse("https://play.google.com/store/apps/details?id=" + packageName));
-        context.startActivity(intent1);
-        return "navigated_to_store";
-      }
+  private String openApp(String packageName, String url) {
+    Uri uri = Uri.parse(url);
+
+    Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+
+    if (likeIng != null) {
+      likeIng.setPackage(packageName);
+
+      likeIng.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+      context.startActivity(likeIng);
+
+      return "app_opened";
     }
+
     return "something went wrong";
   }
 }
